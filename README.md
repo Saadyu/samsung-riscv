@@ -15,7 +15,7 @@ Welcome to the **RISC-V Talent Development Program**! This program is designed t
 
 ## 🔧 Tasks Overview
 
-### 📝 **Task 1**: Calculate the Sum of Numbers from 1 to \( n \)
+### 📝 **Task 1**: Calculate the Sum of Numbers from 1 to n 
 
 #### Objective  
 Write a program to compute the sum of numbers from 1 to \( n \) and compile it using GCC. ALso compile it using the RISVC-V toolchain with both O1 and Ofast optimization levels
