@@ -2,10 +2,10 @@ RISC-V Talent Development Program
 Welcome to the RISC-V Talent Development Program! This program is focused on understanding RISC-V architecture and using open-source tools for practical tasks.
 
 Participant Details
-Name: Saadyant P R
-College: Dayananda Sagar College of Engineering
-Email: saadyant10@gmail.com
-GitHub Profile: Saadyu
+Name: Saadyant P R/n
+College: Dayananda Sagar College of Engineering/n
+Email: saadyant10@gmail.com/n
+GitHub Profile: Saadyu/n
 
 Tasks
 Task 1: Calculate the Sum of Numbers from 1 to n
