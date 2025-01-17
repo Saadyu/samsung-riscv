@@ -1,0 +1,203 @@
+RISC-V Instructions:
+
+1. Instruction: addi sp, sp, -16
+- Instruction type: I
+- Opcode: 0010011 (7 bits)
+- Immediate: -16 (12 bits, two's complement)
+- Source Register (rs1): sp (x2, 5 bits)
+- Destination Register (rd): sp (x2, 5 bits)
+- Function (funct3): 000 (3 bits)
+
+Binary format:
+imm[11:0]    | rs1   | funct3 | rd    | opcode  
+111111110000 | 00010 |  000   | 00010 | 0010011
+
+
+2. Instruction: sd ra, 8(sp)
+- Instruction type: S
+- Opcode: 0100011 (7 bits)
+- Immediate: 8 (split into imm[11:5] and imm[4:0])
+- Source Register (rs1): sp (x2, 5 bits)
+- Source Register (rs2): ra (x1, 5 bits)
+- Function (funct3): 011 (3 bits)
+
+Binary format:
+imm[11:5]  | rs2   |  rs1  | funct3 | imm[4:0] | opcode  
+0000000    | 00001 | 00010 |  011   | 01000    | 0100011
+
+
+3. Instruction: li a2, 15
+Translated to: addi a2, x0, 1
+Instruction type: I
+Opcode: 0010011 (7 bits)
+Immediate: 15 (12 bits)
+Source Register (rs1): x0 (5 bits)
+Destination Register (rd): a2 (x12, 5 bits)
+Function (funct3): 000 (3 bits)
+
+Binary format:
+imm[11:0]    |  rs1  | funct3 |  rd   | opcode  
+000000001111 | 00000 |  000   | 01100 | 0010011
+
+
+4. Instruction: lui a0, 0x21
+Instruction type: U
+Opcode: 0110111 (7 bits)
+Immediate: 0x21 (20 bits, upper bits of address)
+Destination Register (rd): a0 (x10, 5 bits)
+
+Binary format:
+imm[31:12]       |  rd   | opcode  
+0000000000100001 | 01010 | 0110111
+
+
+5. Instruction: jal ra, 10408 <printf>
+Instruction type: J
+Opcode: 1101111 (7 bits)
+Immediate: 10408 (20 bits, two's complement)
+Destination Register (rd): ra (x1, 5 bits)
+
+Binary format:
+
+imm[20|10:1|11|19:12] | rd    | opcode  
+00001010010000101000  | 00001 | 1101111
+
+6. Instruction: ld ra, 8(sp)
+Instruction type: I
+Opcode: 0000011 (7 bits)
+Immediate: 8 (12 bits)
+Source Register (rs1): sp (x2, 5 bits)
+Destination Register (rd): ra (x1, 5 bits)
+Function (funct3): 011 (3 bits)
+
+Binary format:
+
+imm[11:0]    |  rs1  | funct3 |  rd   | opcode  
+000000001000 | 00010 |  011   | 00001 | 0000011
+
+
+7. Instruction: ret
+Translated to: jalr x0, 0(ra)
+Instruction type: I
+Opcode: 1100111 (7 bits)
+Immediate: 0 (12 bits)
+Source Register (rs1): ra (x1, 5 bits)
+Destination Register (rd): x0 (5 bits)
+Function (funct3): 000 (3 bits)
+
+Binary format:
+
+imm[11:0]    |  rs1  | funct3 |  rd   | opcode  
+000000000000 | 00001 |  000   | 00000 | 1100111
+
+
+8. Instruction: mv a1, a0
+Translated to: addi a1, a0, 0
+Instruction type: I
+Opcode: 0010011 (7 bits)
+Immediate: 0 (12 bits)
+Source Register (rs1): a0 (x10, 5 bits)
+Destination Register (rd): a1 (x11, 5 bits)
+Function (funct3): 000 (3 bits)
+
+Binary format:
+
+imm[11:0]    |  rs1  | funct3 |  rd   | opcode  
+000000000000 | 01010 |  000   | 01011 | 0010011
+
+
+9. Instruction: beqz a5, 101f0
+Translated to: beq a5, x0, 101f0
+Instruction type: B
+Opcode: 1100011 (7 bits)
+Immediate: 101f0 (12 bits, two's complement, split into imm[12|10:5|4:1|11])
+Source Register (rs1): a5 (x15, 5 bits)
+Source Register (rs2): x0 (5 bits)
+Function (funct3): 000 (3 bits)
+
+Binary format:
+
+imm[12|10:5] | rs2  | rs1  | funct3 | imm[4:1|11] | opcode  
+1 0100001    | 00000 | 01111 | 000   | 11110      | 1100011
+
+
+10. Instruction: auipc a5, 0xffff0
+Instruction type: U
+Opcode: 0010111 (7 bits)
+Immediate: 0xffff0 (20 bits, upper bits of address)
+Destination Register (rd): a5 (x15, 5 bits)
+
+Binary format:
+
+imm[31:12]       |  rd   | opcode  
+1111111111110000 | 01111 | 0010111
+
+
+11. Instruction: jalr a5
+Translated to: jalr a5, 0(a5)
+Instruction type: I
+Opcode: 1100111 (7 bits)
+Immediate: 0 (12 bits)
+Source Register (rs1): a5 (x15, 5 bits)
+Destination Register (rd): a5 (x15, 5 bits)
+Function (funct3): 000 (3 bits)
+
+Binary format:
+
+imm[11:0]    |  rs1  | funct3 |  rd   | opcode  
+000000000000 | 01111 |  000   | 01111 | 1100111
+
+
+12. Instruction: j 12df8
+Translated to: jal x0, 12df8
+Instruction type: J
+Opcode: 1101111 (7 bits)
+Immediate: 12df8 (20 bits, two's complement)
+Destination Register (rd): x0 (5 bits)
+
+Binary format:
+
+imm[20|10:1|11|19:12]  |  rd   | opcode  
+00001011011111000      | 00000 | 1101111
+
+
+13. Instruction: lbu a5, 1944(gp)
+Instruction type: I
+Opcode: 0000011 (7 bits)
+Immediate: 1944 (12 bits)
+Source Register (rs1): gp (x3, 5 bits)
+Destination Register (rd): a5 (x15, 5 bits)
+Function (funct3): 100 (3 bits)
+
+Binary format:
+
+imm[11:0]    |  rs1  | funct3 |  rd   | opcode  
+011110010000 | 00011 | 100    | 01111 | 0000011
+
+
+14. Instruction: sb a5, 1944(gp)
+Instruction type: S
+Opcode: 0100011 (7 bits)
+Immediate: 1944 (split into imm[11:5] and imm[4:0])
+Source Register (rs1): gp (x3, 5 bits)
+Source Register (rs2): a5 (x15, 5 bits)
+Function (funct3): 000 (3 bits)
+
+Binary format:
+
+imm[11:5]  | rs2   |  rs1  | funct3 | imm[4:0] | opcode  
+0111100    | 01111 | 00011 | 000    | 10000    | 0100011
+
+
+15. Instruction: bne s2, s1, 102bc
+Instruction type: B
+Opcode: 1100011 (7 bits)
+Immediate: 102bc (12 bits, two's complement, split into imm[12|10:5|4:1|11])
+Source Register (rs1): s2 (x18, 5 bits)
+Source Register (rs2): s1 (x9, 5 bits)
+Function (funct3): 001 (3 bits)
+
+Binary format:
+
+imm[12|10:5] | rs2   | rs1   | funct3 | imm[4:1|11] | opcode  
+1 100010     | 01001 | 10010 | 001    | 1110 1      | 1100011
